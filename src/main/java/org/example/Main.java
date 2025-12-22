@@ -1,17 +1,39 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+    public static void main(String[] args) {
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
+        Hospital hospital = new Hospital("Mediker", "Astana");
+
+        Patient p1 = new Patient(1, "Abai", 18, "Flu");
+        Patient p2 = new Patient(2, "Adel", 22, "Cold");
+        Patient p3 = new Patient(3, "Aisana", 25, "Allergy");
+
+        hospital.addPatient(p1);
+        hospital.addPatient(p2);
+        hospital.addPatient(p3);
+
+        Doctor d1 = new Doctor("Dr. Ali", "Therapist");
+        Doctor d2 = new Doctor("Dr. Bekzat", "Allergist");
+
+        hospital.addDoctor(d1);
+        hospital.addDoctor(d2);
+
+        d1.assignPateint(p1);
+        d1.assignPateint(p2);
+        d2.assignPateint(p3);
+
+        hospital.showAllPatients();
+        hospital.showAllDoctors();
+
+        if (p1.getAge() > p2.getAge()) {
+            System.out.println(p1.getName() + " is older than " + p2.getName());
+        }
+        else if (p1.getAge() < p2.getAge()) {
+            System.out.println(p2.getName() + " is older than " + p1.getName());
+        }
+        else {
+            System.out.println(p1.getName() + " and " + p2.getName() + " are the same age");
         }
     }
 }
