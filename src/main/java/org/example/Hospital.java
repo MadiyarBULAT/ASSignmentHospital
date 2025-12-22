@@ -73,7 +73,8 @@ public class Hospital {
     public void showAllDoctors() {
         System.out.println("All doctors in " + name);
         for (Doctor d : doctors) {
-            d.showPateints();
+            d.showPatients();
         }
     }
+
 }

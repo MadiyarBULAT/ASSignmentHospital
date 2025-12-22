@@ -19,9 +19,9 @@ public class Main {
         hospital.addDoctor(d1);
         hospital.addDoctor(d2);
 
-        d1.assignPateint(p1);
-        d1.assignPateint(p2);
-        d2.assignPateint(p3);
+        d1.assignPatient(p1);
+        d1.assignPatient(p2);
+        d2.assignPatient(p3);
 
         hospital.showAllPatients();
         hospital.showAllDoctors();
