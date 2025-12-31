@@ -1,58 +1,40 @@
-package org.example;
+public class Doctor extends Person {
 
-import java.util.ArrayList;
-
-public class Doctor {
-
-    private String name;
     private String specialization;
-    private ArrayList<Patient> patients;
 
-
-    public Doctor(String name, String specialization) {
-        this.name = name;
+    public Doctor(int id, String name, int age,
+                  int experienceYears, String specialization) {
+        super(id, name, age, experienceYears);
         this.specialization = specialization;
-        this.patients = new ArrayList<>();
     }
 
+    @Override
+    public void work() {
+        System.out.println("Doctor " + name +
+                " is treating patients in " + specialization + ".");
+    }
 
+    @Override
+    public String getRole() {
+        return "Doctor";
+    }
 
-    public String getName() {
-        return name;
+    public void treatPatient(String patientName) {
+        System.out.println("Doctor " + name +
+                " is treating patient " + patientName);
+    }
+
+    public boolean isSeniorDoctor() {
+        return experienceYears >= 10;
     }
 
     public String getSpecialization() {
         return specialization;
     }
 
-    public ArrayList<Patient> getPatients() {
-        return patients;
-    }
-
-
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
-    }
-
-    public void setPatients(ArrayList<Patient> patients) {
-        this.patients = patients;
-    }
-
-
-
-    public void assignPatient(Patient patient) {
-        patients.add(patient);
-    }
-
-    public void showPatients() {
-        System.out.println("Doctor name: " + name + " (" + specialization + ")");
-        for (Patient p : patients) {
-            p.showInfo();
-        }
+    @Override
+    public String toString() {
+        return super.toString() +
+                " | Specialization: " + specialization;
     }
 }

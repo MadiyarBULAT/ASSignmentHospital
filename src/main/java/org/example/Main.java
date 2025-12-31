@@ -1,39 +1,118 @@
-package org.example;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
+
+    private static ArrayList<Person> hospitalStaff = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
 
-        Hospital hospital = new Hospital("Mediker", "Astana");
+        hospitalStaff.add(new Person(1, "Aibek", 40, 6));
+        hospitalStaff.add(new Doctor(2, "Murat", 45, 12, "Cardiology"));
+        hospitalStaff.add(new Nurse(3, "Dana", 30, 4, 80));
 
-        Patient p1 = new Patient(1, "Abai", 18, "Flu");
-        Patient p2 = new Patient(2, "Adel", 22, "Cold");
-        Patient p3 = new Patient(3, "Aisana", 25, "Allergy");
+        int choice;
 
-        hospital.addPatient(p1);
-        hospital.addPatient(p2);
-        hospital.addPatient(p3);
+        do {
+            System.out.println("\n===== HOSPITAL MANAGEMENT SYSTEM =====");
+            System.out.println("1. Add General Staff");
+            System.out.println("2. Add Doctor");
+            System.out.println("3. Add Nurse");
+            System.out.println("4. View All Staff");
+            System.out.println("5. Demonstrate Polymorphism");
+            System.out.println("6. View Doctors Only");
+            System.out.println("0. Exit");
+            System.out.print("Choice: ");
 
-        Doctor d1 = new Doctor("Dr. Ali", "Therapist");
-        Doctor d2 = new Doctor("Dr. Bekzat", "Allergist");
+            choice = scanner.nextInt();
+            scanner.nextLine();
 
-        hospital.addDoctor(d1);
-        hospital.addDoctor(d2);
+            switch (choice) {
+                case 1 -> addStaff();
+                case 2 -> addDoctor();
+                case 3 -> addNurse();
+                case 4 -> viewAll();
+                case 5 -> demonstratePolymorphism();
+                case 6 -> viewDoctors();
+            }
 
-        d1.assignPatient(p1);
-        d1.assignPatient(p2);
-        d2.assignPatient(p3);
+        } while (choice != 0);
+    }
 
-        hospital.showAllPatients();
-        hospital.showAllDoctors();
+    private static void addStaff() {
+        System.out.print("ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Age: ");
+        int age = scanner.nextInt();
+        System.out.print("Experience years: ");
+        int exp = scanner.nextInt();
 
-        if (p1.getAge() > p2.getAge()) {
-            System.out.println(p1.getName() + " is older than " + p2.getName());
+        hospitalStaff.add(new Person(id, name, age, exp));
+    }
+
+    private static void addDoctor() {
+        System.out.print("ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Age: ");
+        int age = scanner.nextInt();
+        System.out.print("Experience years: ");
+        int exp = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Specialization: ");
+        String spec = scanner.nextLine();
+
+        hospitalStaff.add(new Doctor(id, name, age, exp, spec));
+    }
+
+    private static void addNurse() {
+        System.out.print("ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Age: ");
+        int age = scanner.nextInt();
+        System.out.print("Experience years: ");
+        int exp = scanner.nextInt();
+        System.out.print("Patients assisted: ");
+        int patients = scanner.nextInt();
+
+        hospitalStaff.add(new Nurse(id, name, age, exp, patients));
+    }
+
+    private static void viewAll() {
+        for (Person p : hospitalStaff) {
+            System.out.println(p);
+
+            if (p instanceof Doctor doctor && doctor.isSeniorDoctor()) {
+                System.out.println("   ⭐ Senior Doctor");
+            }
+            if (p instanceof Nurse nurse && nurse.isHeadNurse()) {
+                System.out.println("   ⭐ Head Nurse");
+            }
         }
-        else if (p1.getAge() < p2.getAge()) {
-            System.out.println(p2.getName() + " is older than " + p1.getName());
+    }
+
+    private static void demonstratePolymorphism() {
+        System.out.println("\n--- POLYMORPHISM DEMO ---");
+        for (Person p : hospitalStaff) {
+            p.work();
         }
-        else {
-            System.out.println(p1.getName() + " and " + p2.getName() + " are the same age");
+    }
+
+    private static void viewDoctors() {
+        for (Person p : hospitalStaff) {
+            if (p instanceof Doctor doctor) {
+                System.out.println(doctor.getName() +
+                        " - " + doctor.getSpecialization());
+            }
         }
     }
 }
