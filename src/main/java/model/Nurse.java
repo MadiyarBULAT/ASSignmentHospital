@@ -1,3 +1,5 @@
+package model;
+
 public class Nurse extends Person {
 
     private int patientsAssisted;
@@ -10,8 +12,7 @@ public class Nurse extends Person {
 
     @Override
     public void work() {
-        System.out.println("Nurse " + name +
-                " is assisting patients.");
+        System.out.println("Nurse " + name + " is assisting patients");
     }
 
     @Override
@@ -19,19 +20,7 @@ public class Nurse extends Person {
         return "Nurse";
     }
 
-    public void assistPatient() {
-        patientsAssisted++;
-        System.out.println("Nurse " + name +
-                " assisted a patient. Total: " + patientsAssisted);
-    }
-
     public boolean isHeadNurse() {
         return patientsAssisted > 100;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() +
-                " | Patients Assisted: " + patientsAssisted;
     }
 }

@@ -1,17 +1,19 @@
-public class Doctor extends Person {
+package model;
+
+public class Doctor extends Person implements Treatable {
 
     private String specialization;
 
     public Doctor(int id, String name, int age,
                   int experienceYears, String specialization) {
         super(id, name, age, experienceYears);
-        this.specialization = specialization;
+        setSpecialization(specialization);
     }
 
     @Override
     public void work() {
         System.out.println("Doctor " + name +
-                " is treating patients in " + specialization + ".");
+                " is treating patients in " + specialization);
     }
 
     @Override
@@ -19,6 +21,7 @@ public class Doctor extends Person {
         return "Doctor";
     }
 
+    @Override
     public void treatPatient(String patientName) {
         System.out.println("Doctor " + name +
                 " is treating patient " + patientName);
@@ -28,13 +31,13 @@ public class Doctor extends Person {
         return experienceYears >= 10;
     }
 
-    public String getSpecialization() {
-        return specialization;
+    public void setSpecialization(String specialization) {
+        if (specialization == null || specialization.trim().isEmpty())
+            throw new IllegalArgumentException("Specialization cannot be empty");
+        this.specialization = specialization;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() +
-                " | Specialization: " + specialization;
+    public String getSpecialization() {
+        return specialization;
     }
 }
