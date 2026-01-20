@@ -1,4 +1,4 @@
-package model;
+package model; //abstract classes
 
 public abstract class Person {
 
@@ -55,3 +55,10 @@ public abstract class Person {
                 ", Experience: " + experienceYears + " years)";
     }
 }
+
+
+
+
+
+
+
