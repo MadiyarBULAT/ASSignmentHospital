@@ -8,7 +8,7 @@ import java.util.List;
 
 public class StaffDAO {
 
-    // ================= UPDATE =================
+    //            UPDATE
     public boolean updateDoctor(Doctor doctor) {
         String sql = """
             UPDATE staff
@@ -64,7 +64,7 @@ public class StaffDAO {
         return false;
     }
 
-    // ================= DELETE =================
+    //          DELETE
     public boolean deleteStaff(int staffId) {
         String sql = "DELETE FROM staff WHERE staff_id = ?";
 
@@ -83,7 +83,7 @@ public class StaffDAO {
         return false;
     }
 
-    // ================= SEARCH =================
+    //            SEARCH
     public List<Staff> searchByName(String name) {
         List<Staff> list = new ArrayList<>();
         String sql = "SELECT * FROM staff WHERE name ILIKE ? ORDER BY name";
@@ -162,7 +162,7 @@ public class StaffDAO {
         return list;
     }
 
-    // ================= HELPER =================
+    //             HELPER
     private Staff extractStaff(ResultSet rs) throws SQLException {
         int id = rs.getInt("staff_id");
         String name = rs.getString("name");

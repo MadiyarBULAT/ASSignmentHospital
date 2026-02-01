@@ -11,7 +11,7 @@ public class HospitalMenu implements Menu {
     private final StaffDAO staffDAO = new StaffDAO();
     private final Scanner scanner = new Scanner(System.in);
 
-    // ===== MENU DISPLAY =====
+    //      MENU DISPLAY
     @Override
     public void displayMenu() {
         System.out.println("""
@@ -33,7 +33,7 @@ public class HospitalMenu implements Menu {
         """);
     }
 
-    // ===== MAIN LOOP =====
+    //       MAIN LOOP
     @Override
     public void run() {
         int choice = -1;
@@ -72,7 +72,7 @@ public class HospitalMenu implements Menu {
         } while (choice != 0);
     }
 
-    // ================== JDBC / DAO PART ==================
+    //      JDBC / DAO PART
 
     private void updateDoctor() {
         System.out.print("Doctor ID: ");
@@ -96,7 +96,7 @@ public class HospitalMenu implements Menu {
         System.out.println(success ? "Doctor updated successfully" : "Update failed");
     }
 
-    // ✅ ДОБАВЛЕНО: Update Nurse
+    //          Update Nurse
     private void updateNurse() {
         System.out.print("Nurse ID: ");
         int id = Integer.parseInt(scanner.nextLine().trim());
@@ -150,7 +150,7 @@ public class HospitalMenu implements Menu {
         staffList.forEach(System.out::println);
     }
 
-    // ✅ ДОБАВЛЕНО: Search by Min Salary
+    //   : Search by Min Salary
     private void searchByMinSalary() {
         System.out.print("Min salary: ");
         double minSalary = Double.parseDouble(scanner.nextLine().trim());
@@ -159,7 +159,7 @@ public class HospitalMenu implements Menu {
         staffList.forEach(System.out::println);
     }
 
-    // ================== OOP PART (placeholders) ==================
+    //      placeholders
 
     private void addDoctor() {
         System.out.println("Add Doctor (OOP part / optional)");
