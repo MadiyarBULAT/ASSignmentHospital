@@ -1,43 +1,21 @@
 package model;
 
-public class Doctor extends Person implements Treatable {
+public class Doctor extends Staff {
 
     private String specialization;
 
-    public Doctor(int id, String name, int age,
+    public Doctor(int staffId, String name, double salary,
                   int experienceYears, String specialization) {
-        super(id, name, age, experienceYears);
-        setSpecialization(specialization);
-    }
-
-    @Override
-    public void work() {
-        System.out.println("Doctor " + name +
-                " is treating patients in " + specialization);
-    }
-
-    @Override
-    public String getRole() {
-        return "Doctor";
-    }
-
-    @Override
-    public void treatPatient(String patientName) {
-        System.out.println("Doctor " + name +
-                " is treating patient " + patientName);
-    }
-
-    public boolean isSeniorDoctor() {
-        return experienceYears >= 10;
-    }
-
-    public void setSpecialization(String specialization) {
-        if (specialization == null || specialization.trim().isEmpty())
-            throw new IllegalArgumentException("Specialization cannot be empty");
+        super(staffId, name, salary, experienceYears);
         this.specialization = specialization;
     }
 
     public String getSpecialization() {
         return specialization;
+    }
+
+    @Override
+    public String getRole() {
+        return "DOCTOR";
     }
 }

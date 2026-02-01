@@ -1,26 +1,13 @@
 package model;
 
-public class Nurse extends Person {
+public class Nurse extends Staff {
 
-    private int patientsAssisted;
-
-    public Nurse(int id, String name, int age,
-                 int experienceYears, int patientsAssisted) {
-        super(id, name, age, experienceYears);
-        this.patientsAssisted = patientsAssisted;
-    }
-
-    @Override
-    public void work() {
-        System.out.println("Nurse " + name + " is assisting patients");
+    public Nurse(int staffId, String name, double salary, int experienceYears) {
+        super(staffId, name, salary, experienceYears);
     }
 
     @Override
     public String getRole() {
-        return "Nurse";
-    }
-
-    public boolean isHeadNurse() {
-        return patientsAssisted > 100;
+        return "NURSE";
     }
 }
