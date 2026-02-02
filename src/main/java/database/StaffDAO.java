@@ -3,12 +3,54 @@ package database;
 import model.*;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class StaffDAO {
 
-    //            UPDATE
+    // ================= CREATE (INSERT) =================
+    public boolean insertDoctor(Doctor doctor) {
+        String sql = """
+            INSERT INTO staff (name, salary, experience_years, staff_type, specialization)
+            VALUES (?, ?, ?, 'DOCTOR', ?)
+        """;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, doctor.getName());
+            ps.setDouble(2, doctor.getSalary());
+            ps.setInt(3, doctor.getExperienceYears());
+            ps.setString(4, doctor.getSpecialization());
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ================= READ (SELECT ALL) =================
+    public List<Staff> getAllStaff() {
+        List<Staff> list = new LinkedList<>();
+        String sql = "SELECT * FROM staff ORDER BY staff_id";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(extractStaff(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // ================= UPDATE =================
     public boolean updateDoctor(Doctor doctor) {
         String sql = """
             UPDATE staff
@@ -16,11 +58,9 @@ public class StaffDAO {
             WHERE staff_id = ? AND staff_type = 'DOCTOR'
         """;
 
-        Connection conn = DatabaseConnection.getConnection();
-        if (conn == null) return false;
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, doctor.getName());
             ps.setDouble(2, doctor.getSalary());
             ps.setInt(3, doctor.getExperienceYears());
@@ -31,10 +71,8 @@ public class StaffDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            DatabaseConnection.close(conn);
+            return false;
         }
-        return false;
     }
 
     public boolean updateNurse(Nurse nurse) {
@@ -44,11 +82,9 @@ public class StaffDAO {
             WHERE staff_id = ? AND staff_type = 'NURSE'
         """;
 
-        Connection conn = DatabaseConnection.getConnection();
-        if (conn == null) return false;
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, nurse.getName());
             ps.setDouble(2, nurse.getSalary());
             ps.setInt(3, nurse.getExperienceYears());
@@ -58,68 +94,54 @@ public class StaffDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            DatabaseConnection.close(conn);
+            return false;
         }
-        return false;
     }
 
-    //          DELETE
+    // ================= DELETE =================
     public boolean deleteStaff(int staffId) {
         String sql = "DELETE FROM staff WHERE staff_id = ?";
 
-        Connection conn = DatabaseConnection.getConnection();
-        if (conn == null) return false;
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, staffId);
             return ps.executeUpdate() > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            DatabaseConnection.close(conn);
+            return false;
         }
-        return false;
     }
 
-    //            SEARCH
+    // ================= SEARCH =================
     public List<Staff> searchByName(String name) {
-        List<Staff> list = new ArrayList<>();
-        String sql = "SELECT * FROM staff WHERE name ILIKE ? ORDER BY name";
+        List<Staff> list = new LinkedList<>();
+        String sql = "SELECT * FROM staff WHERE name ILIKE ?";
 
-        Connection conn = DatabaseConnection.getConnection();
-        if (conn == null) return list;
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, "%" + name + "%");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 list.add(extractStaff(rs));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            DatabaseConnection.close(conn);
         }
         return list;
     }
 
     public List<Staff> searchBySalaryRange(double min, double max) {
-        List<Staff> list = new ArrayList<>();
-        String sql = """
-            SELECT * FROM staff
-            WHERE salary BETWEEN ? AND ?
-            ORDER BY salary DESC
-        """;
+        List<Staff> list = new LinkedList<>();
+        String sql = "SELECT * FROM staff WHERE salary BETWEEN ? AND ?";
 
-        Connection conn = DatabaseConnection.getConnection();
-        if (conn == null) return list;
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setDouble(1, min);
             ps.setDouble(2, max);
             ResultSet rs = ps.executeQuery();
@@ -127,42 +149,34 @@ public class StaffDAO {
             while (rs.next()) {
                 list.add(extractStaff(rs));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            DatabaseConnection.close(conn);
         }
         return list;
     }
 
     public List<Staff> searchByMinSalary(double minSalary) {
-        List<Staff> list = new ArrayList<>();
-        String sql = """
-            SELECT * FROM staff
-            WHERE salary >= ?
-            ORDER BY salary DESC
-        """;
+        List<Staff> list = new LinkedList<>();
+        String sql = "SELECT * FROM staff WHERE salary >= ?";
 
-        Connection conn = DatabaseConnection.getConnection();
-        if (conn == null) return list;
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setDouble(1, minSalary);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 list.add(extractStaff(rs));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            DatabaseConnection.close(conn);
         }
         return list;
     }
 
-    //             HELPER
+    // ================= HELPER =================
     private Staff extractStaff(ResultSet rs) throws SQLException {
         int id = rs.getInt("staff_id");
         String name = rs.getString("name");
@@ -170,9 +184,8 @@ public class StaffDAO {
         int exp = rs.getInt("experience_years");
         String type = rs.getString("staff_type");
 
-        if (type.equals("DOCTOR")) {
-            return new Doctor(id, name, salary, exp,
-                    rs.getString("specialization"));
+        if ("DOCTOR".equals(type)) {
+            return new Doctor(id, name, salary, exp, rs.getString("specialization"));
         } else {
             return new Nurse(id, name, salary, exp);
         }
